@@ -1,0 +1,29 @@
+# The model configuration for the CopyMe_MuLAN model
+#
+# This file should ONLY contain model-specific configuration and needs to be
+# written such that it can be used by _every_ model instance, regardless
+# of the level within a model hierarchy.
+#
+# To that end, it needs to specify the parameters at the level of the instance
+# of a Model class.
+#
+# This file is usually handled by the frontend: usage of advanced yaml features
+# like anchors and tags is supported.
+#
+# Note, however, that this file should hold the _default_ values for a single
+# instance. Therefore, parameter sweeps should not be specified here!
+# Furthermore, if including other models' parameters via the `!model` tag, make
+# sure that no circular includes occur.
+---
+  ### Compile-time parameters
+
+  # Model
+  config_parameter_1: A1
+  config_parameter_2: B2
+
+  # Species 1
+  species_class_1_p1: A
+
+  ### 'normal' parameters
+
+  # ...

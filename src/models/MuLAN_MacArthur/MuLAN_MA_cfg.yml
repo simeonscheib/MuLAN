@@ -1,0 +1,106 @@
+# The model configuration for the MuLAN Mac Arthur model
+#
+# This file should ONLY contain model-specific configuration and needs to be
+# written such that it can be used by _every_ model instance, regardless
+# of the level within a model hierarchy.
+#
+# To that end, it needs to specify the parameters at the level of the instance
+# of a Model class.
+#
+# This file is usually handled by the frontend: usage of advanced yaml features
+# like anchors and tags is supported.
+#
+# Note, however, that this file should hold the _default_ values for a single
+# instance. Therefore, parameter sweeps should not be specified here!
+# Furthermore, if including other models' parameters via the `!model` tag, make
+# sure that no circular includes occur.
+---
+# integrator scheme rkck (Runge-Kutta Cash Karp), euler
+integrator: "rkck"
+
+# step function "normal", "normal_with_step"
+step_func: "normal_with_step"
+
+# linear, type_2
+response_func: "type_2"
+
+# Do producers interact none, LV
+pp_interaction: "none"
+
+# two time steps for integrator step and mutation step
+dt: 0.01
+dt2: 0.1
+
+min_dt: 0.01
+
+# Error for rkck
+error: 0.05
+
+# Set the minimal interaction considered in calculations
+interaction_tolerance: 1.0e-4
+
+# initial mass for producers
+pp_init_mass: 5
+
+# Set the maximum absolute value of producer trait
+# pp_trait_max: 200
+
+# fixed niche width
+# overrides trait[1] for every consumer
+# fixed_y: 25.0
+
+# fixed cost
+# overrides params[3] for every consumer
+fixed_c: 0.0
+
+# domain parameters
+# S0, sigma_S, A, B ,C
+dom_params: [100.0, 100.0, 20.0, 10.0, 12]
+
+# Shape of the environment carrying capacity
+env_func: "gaussian"
+
+# F intrinsic growth rate of the producers
+r: 10
+
+# Delay for consumer growth in dt1
+delay: 0
+
+# mutation on/off
+mutation: [true, true]
+
+# minimal biomass before extinction
+bm_threshold: 0.01
+
+# rate of mutation
+mutation_rate: 0.25
+
+# initial state
+
+
+#init_graph: "/home/simeon/Documents/Dune/config/save_graph.graph"
+
+safe_params: false
+
+# Save the graph structure
+safe_graph: false
+
+init_pp:
+  - type: "gaussian"
+
+#init_pp:
+#  - type: "range"
+#    start: -50
+#    end: 50
+#    step: 2
+
+#init_pp:
+#  - type: "single"
+#    trait: 0
+
+# new value for every initial species
+init_species:
+  - trait: [-50 , 50]
+    mass: 1
+    # R, b, m, c, y, h
+    params: [0.7, 0.8, 35.0, 0.0, 0.01]

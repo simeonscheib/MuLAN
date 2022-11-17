@@ -1,0 +1,269 @@
+# Default plots for the MuLAN model
+---
+
+plt_timestep_dev:
+  creator: universe
+  universes: all
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: plt_timestep_dev
+
+# plot trait space for specific time
+plt_biomass_by_type:
+  creator: universe
+  universes: all
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: plt_biomass_by_type
+  #plot_func: plot_masses#
+  time: 0
+  #xlim: [0, 500]
+  #ylim: [0, 20]
+  xlim: "auto"
+  ylim: "auto"
+  
+mov_biomass_by_type:
+  creator: universe
+  universes: all
+
+  #xlim: [-200, 200]
+  #ylim: [0, 1]
+  xlim: "auto"
+  ylim: "auto"
+  vlim: [22, 30]
+  markersize: 3
+
+  cmap: "autumn"
+
+  x_label: "niche"
+  y_label: "mass"
+  z_label: "niche width"
+
+  plt_colorbar: true
+
+  timeframes: []
+
+  mov: 1
+
+  font_size: 20
+
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: mov_biomass_by_type
+  #plot_func: plot_masses#
+
+plt_trait:
+  creator: universe
+  universes: all
+
+  trait_name: _traits
+
+  fixed_size: 20
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: plt_trait
+
+  cmap: winter
+
+plot_graph:
+  creator: universe
+  universes: all
+
+  xlim: [-70, -30]
+  xlabel: "niche"
+  ylabel: "niche width"
+  zlabel: "layer"
+
+  w_scale: 2
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: plot_graph
+
+save_graph:
+  creator: universe
+  universes: all
+
+  save: ["_types", "_traits", "_niche_w", "_masses"]
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: save_to_file
+
+# plot summed mass of species (opt. phase space)
+plt_biomass_dev:
+  creator: universe
+  universes: all
+
+  plt_3d: false
+  out_type: pdf
+
+  phase_space: true
+
+  labels:
+    0: "Producers"
+    1: "Comsumers"
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: plt_biomass_dev
+
+
+# plot the final states of a multiverse run as surface plot
+carrying_capacity:
+  based_on:
+    - .creator.multiverse
+  # creator: multiverse
+
+  select_and_combine: None
+
+  spec_type: 1
+
+  # plot 3d surface plot
+  plt_3d: 0
+
+  ### 2D
+
+  # number of contour steps
+  # contour_lines: 10
+
+  ### 3D
+
+  # make line plot for every sweep parameter y/n
+  # only visible if plt_3d True
+  line_plot: 1
+
+  font_size: 15
+
+  # line plot arguments
+  # see matplotlib documentation
+  line_plot_args:
+    marker: "."
+    markersize: 0.1
+    linewidth: 0.1
+    color: k
+
+  
+  xlabel: "niche"
+  ylabel: "width"
+
+  x_name: "_traits"
+  y_name: "fixed_y"
+  z_name: "_masses"
+
+  ###
+
+  # write movie? y/n
+  mov: 1
+
+  # movie dpi
+  dpi: 300
+
+  ###
+
+  # plot final state y/n
+  final_state: 1
+
+  # limits of the plot
+  # xlim: [-200, 200]
+  # ylim: [0, 200]
+  # zlim: [0, 200]
+
+  # more options
+
+  # plot a colorbar 2D + 3D
+  # colorbar: False
+  
+  # Logarithmic color scale 2D
+  #log_z: False
+
+  # Number of contour lines 2D
+  # contour_lines: 11
+
+  # angle of the 3D plot (mpl default: -60)
+  # azim: -60
+  
+  # title : 'MuLAN Mac Arthur Model'
+  # artist : 'Utopia'
+  # comment : ''
+  # fps : 15
+  # start_frame : 0
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: carrying_capacity_fixed_y
+
+
+# plot the final states of a multiverse run as surface plot
+carrying_capacity_uni:
+  creator: universe
+  universes: all
+
+  spec_type: 1
+
+  # plot 3d surface plot
+  plt_3d: 1
+
+  ### 2D
+
+  # number of contour steps
+  # contour_lines: 10
+
+  ### 3D
+
+  # make line plot for every sweep parameter y/n
+  # only visible if plt_3d True
+  line_plot: 1
+
+  # line plot arguments
+  # see matplotlib documentation
+  line_plot_args:
+    marker: "."
+    markersize: 0.1
+    linewidth: 0.1
+    color: k
+
+
+  xlabel: "niche"
+  ylabel: "width"
+
+  x_name: "_traits"
+  y_name: "_niche_w"
+  z_name: "_masses"
+
+  ###
+
+  # write movie? y/n
+  mov: 1
+
+  # movie dpi
+  dpi: 300
+
+  ###
+
+  # plot final state y/n
+  final_state: 1
+
+  # limits of the plot
+  # xlim: [-200, 200]
+  # ylim: [0, 200]
+  # zlim: [0, 200]
+
+  # more options
+
+  # plot a colorbar 2D + 3D
+  # colorbar: False
+
+  # Logarithmic color scale 2D
+  #log_z: False
+
+  # Number of contour lines 2D
+  # contour_lines: 11
+
+  # angle of the 3D plot (mpl default: -60)
+  # azim: -60
+
+  # title : 'MuLAN Mac Arthur Model'
+  # artist : 'Utopia'
+  # comment : ''
+  # fps : 15
+  # start_frame : 0
+
+  module: model_plots.MuLAN_MacArthur
+  plot_func: carrying_capacity_uni
