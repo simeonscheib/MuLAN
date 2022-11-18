@@ -36,7 +36,7 @@ namespace MuLAN_MA {
         }
 
         // TODO: give it a layer id
-        const static int type_id = 0;
+        const static int type_id = 1;
 
         // Store number of species
         static int spec_count;

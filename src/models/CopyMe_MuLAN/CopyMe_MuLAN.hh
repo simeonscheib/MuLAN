@@ -47,7 +47,7 @@ namespace Utopia::Models::MuLAN_MA {
     };
 
     /// Typehelper to define types of MuLAN model
-    using MuLAN_MAModelTypes = ModelTypes<>;
+    using CopyMe_MuLANModelTypes = ModelTypes<>;
 
     /**
      * @brief Multilayered Adaptive Network Model
@@ -57,11 +57,11 @@ namespace Utopia::Models::MuLAN_MA {
      */
     template <typename DOM_T>
     class CopyMe_MuLANModel:
-            public Model<CopyMe_MuLANModel<DOM_T>, MuLAN_MAModelTypes>
+            public Model<CopyMe_MuLANModel<DOM_T>, CopyMe_MuLANModelTypes>
     {
     public:
         /// The base model type
-        using Base = Model<CopyMe_MuLANModel, MuLAN_MAModelTypes>;
+        using Base = Model<CopyMe_MuLANModel, CopyMe_MuLANModelTypes>;
 
         /// Data type that holds the configuration
         using Config [[maybe_unused]] = typename Base::Config;
@@ -152,15 +152,16 @@ namespace Utopia::Models::MuLAN_MA {
             // TODO: change number of options
             this->_org_mngr.template register_<species_class_1_t, 2>(species_class_1_conf_v);
 
+
+            // TODO: rename
             std::vector<int> species_class_2_conf_v;
 
-            // Response Function predator prey
+            // TODO: map options
             std::map<std::string, int> species_class_2_map = {
                     {"A", 0},
                     {"B", 1},
                     {"C", 2}
             };
-
             species_class_2_conf_v.push_back(species_class_2_map[get_as<std::string>("species_class_2_p1", this->_cfg)]);
 
 
@@ -189,8 +190,9 @@ namespace Utopia::Models::MuLAN_MA {
             // TODO: Initialize species_class_1 here
             // TODO: Change the names and arguments according to previous configuration
             // Use this to add a species to the domain
-            this->_org_mngr.template add_<species_class_2_t>(mass, ps);
-
+            // this->_org_mngr.template add_<species_class_1_t>(mass, ps);
+            typename DOM_T::pspace_t ps = {0, {0,0}, {1}};
+            this->_org_mngr.template add_<species_class_1_t>(1, ps);
             this->_log->debug("species_class_1 initialized");
 
         }
@@ -200,7 +202,7 @@ namespace Utopia::Models::MuLAN_MA {
             // TODO: Initialize species_class_2 here
             // TODO: Change the names and arguments according to previous configuration
             // Use this to add a species to the domain
-            this->_org_mngr.template add_<species_class_2_t>(mass, ps);
+            // this->_org_mngr.template add_<species_class_2_t>(mass, ps);
 
             this->_log->debug("species_class_2 initialized");
 
@@ -234,8 +236,7 @@ namespace Utopia::Models::MuLAN_MA {
 
         void monitor [[maybe_unused]] ()
         {
-            this->_monitor.set_entry("Number producers: ", *(this->pp_spec_count));
-            this->_monitor.set_entry("Number consumers: ", *(this->cons_spec_count));
+
         }
 
 
@@ -250,9 +251,12 @@ namespace Utopia::Models::MuLAN_MA {
 
             if ( get_as<bool>("safe_graph",  this->_cfg) ) {
                 this->_log->debug("Saving Graph");
+                this->_log->debug("vert");
                 save_graph_vertex_value(this->_dom.graph, this->_hdfgrp, std::to_string(this->_time), "_graph_vertex",
                                         [](auto& vw){return vw.id;});
+                this->_log->debug("edge");
                 save_graph_edges(this->_dom.graph, this->_hdfgrp, std::to_string(this->_time), "_graph_edges");
+                this->_log->debug("prop");
                 save_graph_edge_value(this->_dom.graph, this->_hdfgrp, std::to_string(this->_time), "_graph_edge_v",
                                       [](auto& vw){return vw.interaction_vector[0];});
             }

@@ -12,28 +12,34 @@
 
 namespace Utopia::Models::MuLAN_MA {
 
-
+    // TODO: Modify template. Define the class put on the nodes and edges as well as parameter/trait
     /**
      * @brief Domain Interface
      * @details Interface for domain class after filtering configs
      * 
      */
-    template <typename CURRENCY, int INTEGRATOR, std::size_t SUM_SIZE>
-    class domain_interface : public domain_base<domain_interface<CURRENCY, INTEGRATOR, SUM_SIZE>,
-                                        CURRENCY, 
-                                        parameter_space, 
+    template <typename CURRENCY, std::size_t SUM_SIZE, int INTEGRATOR, int OPTION_1>
+    class domain_interface : public domain_base<domain_interface<CURRENCY, SUM_SIZE, INTEGRATOR, OPTION_1>,
+                                        // The currency of the system. e.g. double
+                                        CURRENCY,
+                                        // Custom parameter space per orgaqnism
+                                        parameter_space,
+                                        // Vertex Type
                                         vertex_wrapper<
                                             organism<
                                                     domain_interface<
                                                             CURRENCY,
-                                                            INTEGRATOR,
                                                             SUM_SIZE,
-                                                            ENV_FUNC>,
+                                                            INTEGRATOR,
+                                                            OPTION_1>,
                                                     parameter_space>
-                                        >, 
+                                        >,
+                                        // edge type
                                         edge_wrapper<
+                                            // In this case an array with a single weight
                                             std::array<double, 1> 
                                         >,
+                                        // How often to iterate over edges. Use to calculate nested sums
                                         SUM_SIZE
                                     > {
     public:
@@ -42,9 +48,9 @@ namespace Utopia::Models::MuLAN_MA {
          * @brief Define the chosen Integrator
          * 
          */
-        using integrator_t = std::conditional_t< INTEGRATOR == 0, 
-            rkck<CURRENCY, organism<domain_interface<CURRENCY, INTEGRATOR, SUM_SIZE>, parameter_space> >,
-            euler<CURRENCY, organism<domain_interface<CURRENCY, INTEGRATOR, SUM_SIZE, ENV_FUNC>, parameter_space> > >;
+        using integrator_t = std::conditional_t< INTEGRATOR == 0,
+            rkck<CURRENCY, organism<domain_interface<CURRENCY, SUM_SIZE, INTEGRATOR, OPTION_1>, parameter_space> >,
+            euler<CURRENCY, organism<domain_interface<CURRENCY, SUM_SIZE, INTEGRATOR, OPTION_1>, parameter_space> > >;
 
         using currency = typename integrator_t::currency;
 
@@ -66,7 +72,7 @@ namespace Utopia::Models::MuLAN_MA {
             }
         }
 
-        virtual double S(double, double) = 0;
+       // TODO: Add members here. You can use virtual functions
     };
 
 
@@ -76,11 +82,13 @@ namespace Utopia::Models::MuLAN_MA {
      * @details Specify organism, vertex and edge type
      * 
      */
-    template <  typename CURRENCY, 
-                int INTEGRATOR,
+    template <  typename CURRENCY,
                 int SUM_SIZE,
+                int INTEGRATOR,
+                int OPTION_1,
+                int OPTION_2,
                 int ...Ns>
-    class domain : public domain_interface<CURRENCY, INTEGRATOR, SUM_SIZE> {
+    class domain : public domain_interface<CURRENCY, SUM_SIZE, INTEGRATOR, OPTION_1> {
 
     public:
 
@@ -89,14 +97,15 @@ namespace Utopia::Models::MuLAN_MA {
          * @details e.g. Biomass
          * 
          */
-        using currency [[maybe_unused]] = CURRENCY;
+        using currency = CURRENCY;
 
         /**
          * @brief Base Type of domain
-         * @details e.g. domain_interface
+         * @details e.g. domain_interface. This is very important and should always be set. If you
+         * do not use
          * 
          */
-        using base_t [[maybe_unused]] = domain_interface<CURRENCY, INTEGRATOR, SUM_SIZE>;
+        using base_t [[maybe_unused]] = domain_interface<CURRENCY, SUM_SIZE, INTEGRATOR, OPTION_1>;
 
     };
 

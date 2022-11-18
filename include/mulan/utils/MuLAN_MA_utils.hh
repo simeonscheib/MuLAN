@@ -101,9 +101,11 @@ namespace MuLAN_MA {
         // Save
         auto [v, v_end] = boost::vertices(g);
 
-        dset->write(v, v_end,
-                          [&get_value, &g](auto& vd){return get_value(g[vd]);}
-        );
+        if (num_vertices != 0) {
+            dset->write(v, v_end,
+                        [&get_value, &g](auto &vd) { return get_value(g[vd]); }
+            );
+        }
 
         // debug info
         log->debug("Graph {} ({} property) saved.", name, dset_name, num_vertices);
@@ -135,7 +137,7 @@ namespace MuLAN_MA {
                                                                       )
     {
         // Collect some information on the graph
-        auto num_edges = boost::num_edges(g);
+        std::size_t num_edges = boost::num_edges(g);
 
         auto log = spdlog::get("data_io");
 
@@ -151,14 +153,15 @@ namespace MuLAN_MA {
         // Save
         auto [e, e_end] = boost::edges(g);
 
-        dset->write(e, e_end,
-                    [&g](auto vd){return g[source(vd, g)].id;}
-        );
+        if (num_edges != 0) {
+            dset->write(e, e_end,
+                        [&g](auto vd) { return g[source(vd, g)].id; }
+            );
 
-        dset->write(e, e_end,
-                    [&g](auto vd){return g[target(vd, g)].id;}
-        );
-
+            dset->write(e, e_end,
+                        [&g](auto vd) { return g[target(vd, g)].id; }
+            );
+        }
 
         // debug info
         log->debug("Graph {} ({} property) saved.", name, dset_name, num_edges);
@@ -206,9 +209,11 @@ namespace MuLAN_MA {
         // Save
         auto [e, e_end] = boost::edges(g);
 
-        dset->write(e, e_end,
-                    [&get_value, &g](auto vd){return get_value(g[vd]);}
-        );
+        if (num_edges != 0) {
+            dset->write(e, e_end,
+                        [&get_value, &g](auto vd) { return get_value(g[vd]); }
+            );
+        }
 
         // debug info
         log->debug("Graph {} ({} property) saved.", name, dset_name, num_edges);

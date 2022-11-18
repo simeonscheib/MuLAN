@@ -18,12 +18,18 @@
   ### Compile-time parameters
 
   # Model
+  integrator: rkck
+
   config_parameter_1: A1
   config_parameter_2: B2
 
   # Species 1
   species_class_1_p1: A
 
+  # Species 2
+  species_class_2_p1: C
+
   ### 'normal' parameters
 
+  safe_graph: true
   # ...

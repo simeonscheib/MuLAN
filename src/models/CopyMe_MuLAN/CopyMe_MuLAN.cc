@@ -25,7 +25,9 @@ public:
      */
     template<typename ParentType, int ...Bs>
     static inline void run(ParentType& pp){
-        MuLAN_MAModel<domain<Ts..., Bs...> > model("MuLAN_MA", pp);
+        // TODO: Change Name
+        // You can also set template parameters here like in this case the SUM_SIZE
+        CopyMe_MuLANModel<domain<Ts..., 1, Bs...> > model("CopyMe_MuLAN", pp);
         model.run();
     }
 };
@@ -43,9 +45,15 @@ int main (int /*argc*/, char** argv)
         /// map config entries to ints for model building
         // TODO: Add your own configuration options that are evaluated ad compile time
         const cfg_map config_map {
+                {"integrator", {
+                                       {"rkck", 0},
+                                       {"euler", 1}
+                               }
+                },
                 {"config_parameter_1", {
                                        {"A1", 0},
-                                       {"A2", 1}
+                                       {"A2", 1},
+                                       {"A3", 2}
                                }
                 },
                 {"config_parameter_2", {
@@ -56,12 +64,13 @@ int main (int /*argc*/, char** argv)
         };
 
         /// ModelBuilder Object
-        auto Builder = ModelBuilder(pp, config_map, "MuLAN_MA");
+        // TODO: change name
+        auto Builder = ModelBuilder(pp, config_map, "CopyMe_MuLAN");
 
         /// Run the Model with Run::run() config from pp
         /// integers behind the runner class denote the number of config parameters
         // TODO: Adapt number of parameter for every configuration option
-        Builder.build<Run<double>, 2,2>(pp);
+        Builder.build<Run<double>, 2, 3, 2>(pp);
 
         return 0;
     }
